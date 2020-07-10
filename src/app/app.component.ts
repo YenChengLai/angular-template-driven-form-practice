@@ -8,25 +8,47 @@ import { NgForm } from '@angular/forms';
 })
 export class AppComponent {
 
-  @ViewChild('form', { static: false }) ngForm: NgForm;
+  @ViewChild('form', { static: false }) signUpForm: NgForm;
   defaultQuestion = 'teacher';
   answer = '';
   genders = ['male', 'female'];
+  user = {
+    username: '',
+    email: '',
+    secretQuestion: '',
+    answer: '',
+    gender: ''
+  };
+  submitted = false;
 
   suggestUserName() {
     const suggestedName = 'Superuser';
-    this.ngForm.setValue({
+    // ngForm => setValue => change EVERY control in the form
+
+    // this.signUpForm.setValue({
+    //   userData: {
+    //     username: suggestedName,
+    //     email: ''
+    //   },
+    //   secret: 'pet',
+    //   questionAnswer: '',
+    //   gender: 'male'
+    // });
+
+    // ngForm => form => patchValue => set specific controls' values
+    this.signUpForm.form.patchValue({
       userData: {
-        username: suggestedName,
-        email: ''
-      },
-      secret: 'pet',
-      questionAnswer: '',
-      gender: 'male'
+        username: suggestedName
+      }
     });
   }
 
   onSubmit() {
-    console.log(this.ngForm);
+    this.submitted = true;
+    this.user.username = this.signUpForm.value.userData.username;
+    this.user.email = this.signUpForm.value.userData.email;
+    this.user.secretQuestion = this.signUpForm.value.secret;
+    this.user.answer = this.signUpForm.value.questionAnswer;
+    this.user.gender = this.signUpForm.value.gender;
   }
 }
